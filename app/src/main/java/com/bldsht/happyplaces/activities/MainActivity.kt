@@ -1,12 +1,8 @@
-package com.bldsht.happyplaces
+package com.bldsht.happyplaces.activities
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.bldsht.happyplaces.databinding.ActivityAddHappyPlaceBinding
 import com.bldsht.happyplaces.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
