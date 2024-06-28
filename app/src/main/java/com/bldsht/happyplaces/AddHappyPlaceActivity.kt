@@ -1,6 +1,7 @@
 package com.bldsht.happyplaces
 
 import android.Manifest
+import androidx.appcompat.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -11,7 +12,6 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -64,6 +64,7 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
                     cal.get(Calendar.DAY_OF_MONTH)).show()
             }
             R.id.tv_add_image ->{
+                //Toast.makeText(this@AddHappyPlaceActivity, "Coming soon...", Toast.LENGTH_SHORT).show()
                 val pictureDialog = AlertDialog.Builder(this)
                 pictureDialog.setTitle("Select Action")
                 val pictureDialogItems = arrayOf("Select photo from gallery", "Capture photo from camera")
@@ -74,6 +75,7 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
                     1 -> Toast.makeText(this@AddHappyPlaceActivity, "Coming soon...", Toast.LENGTH_SHORT).show()
                     }
                 }
+                pictureDialog.show()
             }
         }
     }
@@ -83,8 +85,8 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         ).withListener(object : MultiplePermissionsListener{
-            override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-                if (report.areAllPermissionsGranted()){
+            override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                if (report!!.areAllPermissionsGranted()){
                     Toast.makeText(this@AddHappyPlaceActivity,"Storage Permission are granted",Toast.LENGTH_SHORT).show()
                 }
             }
