@@ -1,8 +1,11 @@
 package com.bldsht.happyplaces.database
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import com.bldsht.happyplaces.models.HappyPlaceModel
 
@@ -60,5 +63,34 @@ class DataBaseHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAM
         val result = db.insert(TABLE_HAPPY_PLACE, null, contentValues)
         db.close()
         return result
+    }
+
+    @SuppressLint("Range")
+    fun getHappyPlacesList(): ArrayList<HappyPlaceModel>{
+        val happyPlaceList = ArrayList<HappyPlaceModel>()
+        val selectQuery = "SELECT * FROM $TABLE_HAPPY_PLACE"
+        val db = this.readableDatabase
+
+        try {
+            val cursor: Cursor = db.rawQuery(selectQuery,null)
+            if (cursor.moveToFirst()){
+                do{
+                    val place = HappyPlaceModel(
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndex(KEY_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(KEY_IMAGE)),
+                        cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION)),
+                        cursor.getString(cursor.getColumnIndex(KEY_DATE)),
+                        cursor.getString(cursor.getColumnIndex(KEY_LOCATION)),
+                        cursor.getDouble(cursor.getColumnIndex(KEY_LATITUDE)),
+                        cursor.getDouble(cursor.getColumnIndex(KEY_LONGITUDE))
+                        )
+                }while (cursor.moveToNext())
+            }
+        }catch (e: SQLiteException){
+            db.execSQL(selectQuery)
+            return ArrayList()
+        }
+        return happyPlaceList
     }
 }
