@@ -22,6 +22,7 @@ import com.bldsht.happyplaces.R
 import com.bldsht.happyplaces.database.DataBaseHandler
 import com.bldsht.happyplaces.databinding.ActivityAddHappyPlaceBinding
 import com.bldsht.happyplaces.models.HappyPlaceModel
+import com.google.android.libraries.places.api.Places
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -56,6 +57,11 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         binding.toolbarAddPlace.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+
+        if (!Places.isInitialized()){
+            Places.initialize(this@AddHappyPlaceActivity, resources.getString(R.string.google_maps_api_key))
+
         }
 
         if (intent.hasExtra(MainActivity.EXTRA_PLACE_DETAILS)){

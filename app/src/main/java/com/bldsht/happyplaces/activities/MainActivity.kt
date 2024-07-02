@@ -12,6 +12,7 @@ import com.bldsht.happyplaces.adapters.HappyPlacesAdapter
 import com.bldsht.happyplaces.database.DataBaseHandler
 import com.bldsht.happyplaces.databinding.ActivityMainBinding
 import com.bldsht.happyplaces.models.HappyPlaceModel
+import com.bldsht.happyplaces.utils.SwipeToDeleteCallback
 import com.bldsht.happyplaces.utils.SwipeToEditCallback
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +55,31 @@ class MainActivity : AppCompatActivity() {
         }
         val editItemTouchHelper = ItemTouchHelper(editSwipeHandler)
         editItemTouchHelper.attachToRecyclerView(recyclerView)
+
+        val deleteSwipeHandler = object : SwipeToDeleteCallback(this){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = recyclerView.adapter as HappyPlacesAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+
+                gteHappyPlacesListFromLocalDB()
+            }
+        }
+        val deleteItemTouchHelper = ItemTouchHelper(deleteSwipeHandler)
+        deleteItemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun gteHappyPlacesListFromLocalDB() {
+        val dbHandler = DataBaseHandler(this)
+        val getHappyPlaceList : ArrayList<HappyPlaceModel> = dbHandler.getHappyPlacesList()
+
+        if (getHappyPlaceList.size > 0){
+            binding.rvHappyPlacesList.visibility = View.VISIBLE
+            binding.tvNoRecordsAvailable.visibility = View.GONE
+            setUpHappyPlacesRecyclerView(getHappyPlaceList)
+            }else{
+            binding.rvHappyPlacesList.visibility = View.GONE
+            binding.tvNoRecordsAvailable.visibility = View.VISIBLE
+        }
     }
 
     private fun getHappyPlacesListFromLocalDB(){
