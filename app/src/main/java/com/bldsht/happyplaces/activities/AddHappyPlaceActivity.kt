@@ -50,8 +50,8 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityAddHappyPlaceBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        //setSupportActionBar(toolbar_add_place)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setSupportActionBar(binding.toolbarAddPlace)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         binding.toolbarAddPlace.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -106,7 +106,7 @@ class AddHappyPlaceActivity : AppCompatActivity(), View.OnClickListener {
                   val addHappyPlace = dbHandler.addHappyPlace(happyPlaceModel)
 
                   if(addHappyPlace > 0){
-                      Toast.makeText(this@AddHappyPlaceActivity, "Happy Place added successfully", Toast.LENGTH_SHORT).show()
+                      setResult(Activity.RESULT_OK)
                       finish()
                   }
               }
